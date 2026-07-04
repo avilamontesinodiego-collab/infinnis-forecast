@@ -1,0 +1,26 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #eef2f7;
+  --white: #ffffff;
+  --header: #003c71;
+  --header-light: #00508f;
+  --accent: #0078d4;
+  --accent-light: #cce4f7;
+  --accent-dark: #002855;
+  --border: #c8d6e5;
+  --border-light: #dfe6ed;
+  --text: #1a2b3c;
+  --text-muted: #5a6f82;
+  --text-light: #8a9bac;
+  --grid-bg: #f7f9fc;
+  --green: #0b8043;
+  --green-bg: #e6f4ea;
+  --red: #c5221f;
+  --red-bg: #fce8e6;
+  --orange: #e37400;
+  --orange-bg: #fef3e0;
+  --purple: #7b1fa2;
+}
+html, body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+a { color: var(--accent); text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
