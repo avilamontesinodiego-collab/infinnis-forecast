@@ -11,6 +11,7 @@ function AuthProvider({ children }) {
   const [role, setRole] = useState(null)
   const [loading, setLoading] = useState(true)
   const [appEnabled, setAppEnabled] = useState(true)
+  const [branding, setBranding] = useState({ logo_url: '', company_name: 'Infinnis' })
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -18,12 +19,12 @@ function AuthProvider({ children }) {
       if (session?.user) fetchRole(session.user.id)
       else setLoading(false)
     })
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
       setUser(session?.user ?? null)
       if (session?.user) fetchRole(session.user.id)
       else { setRole(null); setLoading(false) }
     })
-    fetchAppEnabled()
+    fetchConfig()
     return () => subscription.unsubscribe()
   }, [])
 
@@ -33,13 +34,18 @@ function AuthProvider({ children }) {
     setLoading(false)
   }
 
-  async function fetchAppEnabled() {
-    const { data } = await supabase.from('app_config').select('value').eq('key', 'app_enabled').single()
-    setAppEnabled(data?.value === true)
+  async function fetchConfig() {
+    const { data } = await supabase.from('app_config').select('key,value').in('key', ['app_enabled', 'branding'])
+    if (data) {
+      for (const row of data) {
+        if (row.key === 'app_enabled') setAppEnabled(row.value === true)
+        if (row.key === 'branding') setBranding({ logo_url: row.value?.logo_url || '', company_name: row.value?.company_name || 'Infinnis' })
+      }
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ user, role, loading, appEnabled, setAppEnabled, fetchAppEnabled }}>
+    <AuthContext.Provider value={{ user, role, loading, appEnabled, setAppEnabled, branding, setBranding, refreshConfig: fetchConfig }}>
       {children}
     </AuthContext.Provider>
   )
@@ -47,10 +53,6 @@ function AuthProvider({ children }) {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es">
-      <body>
-        <AuthProvider>{children}</AuthProvider>
-      </body>
-    </html>
+    <html lang="es"><body><AuthProvider>{children}</AuthProvider></body></html>
   )
 }

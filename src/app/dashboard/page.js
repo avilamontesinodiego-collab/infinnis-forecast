@@ -5,7 +5,7 @@ import { useAuth } from '@/app/layout'
 import Navbar from '@/components/Navbar'
 import dynamic from 'next/dynamic'
 
-const ForecastChart = dynamic(() => import('@/components/ForecastChart'), { ssr: false })
+const Dashboard = dynamic(() => import('@/components/Dashboard'), { ssr: false })
 
 export default function DashboardPage() {
   const { user, role, loading, appEnabled } = useAuth()
@@ -45,7 +45,7 @@ export default function DashboardPage() {
   return (
     <div style={{ minHeight: '100vh', background: '#eef2f7' }}>
       <Navbar />
-      <ForecastChart />
+      <Dashboard />
     </div>
   )
 }

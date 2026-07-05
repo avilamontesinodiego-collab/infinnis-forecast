@@ -28,7 +28,7 @@ Datos excluidos por outlier/promo: ${excluded.length > 0 ? excluded.map(i => mon
     const userMsg = question || 'Analiza el comportamiento de la demanda. Detecta tendencias, estacionalidad, riesgos. Da 3 recomendaciones concretas al equipo de operaciones. Sé breve y directo.'
 
     const response = await client.messages.create({
-      model: 'claude-opus-4-6',
+      model: 'claude-sonnet-5',
       max_tokens: 1024,
       system: context,
       messages: [{ role: 'user', content: userMsg }]
